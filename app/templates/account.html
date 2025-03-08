@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% import "bootstrap_wtf.html" as wtf %}
+
+
+{% block content %}
+<h1>Account Settings</h1>
+
+<p>Welcome {{ current_user.username }}</p>
+<p>email registered: {{ current_user.email }}</p>
+{% endblock %}

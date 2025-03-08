@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% import "bootstrap_wtf.html" as wtf %}
+
+
+{% block content %}
+<div class="container">
+<h1>Register A new account</h1>
+<form method="POST" action="/register" novalidate>
+
+<div class="form-control">
+    {{ form.hidden_tag() }}
+    {{ wtf.form_field(form.username, False) }}
+    {{ wtf.form_field(form.email, False) }}
+    {{ wtf.form_field(form.password, False) }}
+    {{ wtf.form_field(form.password2, False) }}
+    {{ wtf.form_field(form.role, False) }}
+    {{ wtf.form_field(form.submit, False) }}
+
+</div>
+</form>
+</div>
+{% endblock %}

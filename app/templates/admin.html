@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% import "bootstrap_wtf.html" as wtf %}
+
+
+{% block content %}
+<div class="text-center form-control">
+<h1>Admin Control Centre</h1>
+
+<h2>Current registered users</h2>
+</div>
+<div class="container">
+<table class="table table-bordered table-striped text-center w-50 mx-auto">
+    <thead>
+    <tr>
+        <td>ID</td>
+        <td>Username</td>
+        <td>Email</td>
+        <td>Role</td>
+    </tr>
+    </thead>
+    <tbody>
+    {% for user in users %}
+    <tr>
+        <td>{{ user[0] }}</td>
+        <td>{{ user[1] }}</td>
+        <td>{{ user[2] }}</td>
+        <td>{{ user[3] }}</td>
+        <form action="/admin" method="POST">
+            {{ form.csrf_token() }}
+            {{ form.choose(value = user[0]) }}
+            <td>
+                <button type="submit" name="delete" value="True" class="btn">
+                    <i class="bi bi-trash3"></i>
+                </button>
+            </td>
+            </form >
+        <form action="/admin" method="POST">
+            {{ form.csrf_token() }}
+            {{ form.choose(value = user[0]) }}
+            <td>
+                {{ form.toggle(class="btn btn-primary") }}
+            </td>
+        </form>
+    </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+</div>
+{% endblock %}
