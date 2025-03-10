@@ -4,7 +4,15 @@
 
 {% block content %}
 <h1>Account Settings</h1>
-
+<form action="/account" method="POST">
 <p>Welcome {{ current_user.username }}</p>
 <p>email registered: {{ current_user.email }}</p>
+<div class="container">
+    {{ form.hidden_tag() }}
+    {{ wtf.form_field(form.oldEmail, False) }}
+    {{ wtf.form_field(form.email, False) }}
+    {{ wtf.form_field(form.email2, False) }}
+    {{ wtf.form_field(form.submit, False) }}
+</div>
+</form>
 {% endblock %}

@@ -1,6 +1,6 @@
 from flask import render_template, redirect, url_for, flash, request, send_file, send_from_directory
 from app import app
-from app.forms import ChooseForm, LoginForm, ChangePasswordForm, RegisterForm, SubmitForm
+from app.forms import ChooseForm, LoginForm, ChangePasswordForm, RegisterForm, SubmitForm, EmailChange
 from flask_login import current_user, login_user, logout_user, login_required
 import sqlalchemy as sa
 from app import db
@@ -26,7 +26,23 @@ def home():
 @app.route("/account", methods=['GET', 'POST'])
 @login_required
 def account():
-    return render_template('account.html', title="Account")
+    form = EmailChange()
+    if form.validate_on_submit():
+        oldEmail = form.oldEmail.data
+        email = form.email.data
+
+        if not oldEmail == current_user.email:
+            flash('The email does not match your current email, please check the email','Danger')
+            return render_template('account.html', title="Account", form=form)
+
+        else:
+            current_user.email = email
+            db.session.commit()
+            flash('email updated successfully', 'success')
+
+
+        return render_template('account.html', title="Account", form=form)
+    return render_template('account.html', title="Account", form=form)
 
 @app.route('/admin', methods=['GET', 'POST'])
 @login_required

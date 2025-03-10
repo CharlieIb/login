@@ -70,3 +70,8 @@ class SubmitForm(FlaskForm):
     choose = HiddenField('Choice')
     toggle = SubmitField()
 
+class EmailChange(FlaskForm):
+    oldEmail = StringField('Old email', validators=[DataRequired()])
+    email = StringField('New Email', validators=[DataRequired(), EqualTo('email2')])
+    email2 = StringField('Re-enter Email', validators=[DataRequired()] )
+    submit = SubmitField('Update Email')
