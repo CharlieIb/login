@@ -1,8 +1,9 @@
 # from operator import contains
 from flask_wtf import FlaskForm
-from wtforms import SubmitField, HiddenField, StringField, PasswordField, BooleanField, IntegerField
-from wtforms.fields.core import SelectField
-from wtforms.validators import DataRequired, NumberRange, EqualTo, Length, ValidationError
+from flask_login import current_user
+from wtforms import SubmitField, HiddenField, StringField, PasswordField, BooleanField, IntegerField, SelectField
+# from wtforms.fields.core import SelectField
+from wtforms.validators import DataRequired, NumberRange, EqualTo, Length, ValidationError, Optional
 import re
 
 
@@ -37,6 +38,29 @@ def contains(digit=-1, upper=-1, lower=-1, special=-1):
 
 
 
+class NotEqualTo(object):
+    def __init__(self, fieldname, message=None):
+        self.fieldname = fieldname
+        self.message = message
+
+    def __call__(self, form, field):
+        try:
+            other = form[self.fieldname]
+        except KeyError:
+            raise ValidationError(field.gettext("Invalid field name '%s'.") % self.fieldname)
+        if field.data == other.data:
+            d = {
+                'other_label': hasattr(other, 'label') and other.label.text or self.fieldname,
+                'other_name': self.fieldname
+            }
+            message = self.message
+            if message is None:
+                message = field.gettext('Field must be equal to %(other_name)s.')
+
+            raise ValidationError(message % d)
+
+
+
 class ChooseForm(FlaskForm):
     choice = HiddenField('Choice')
 
@@ -57,7 +81,8 @@ class ChangePasswordForm(FlaskForm):
 
 class RegisterForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired()])
+    email = StringField('Primary email', validators=[DataRequired()])
+    backup_email = StringField('Secondary email(Optional)', validators=[NotEqualTo('email')])
     password = PasswordField('Password', validators=[DataRequired(),
                                                      Length(min=8),
                                                      EqualTo('password2'),
@@ -70,8 +95,14 @@ class SubmitForm(FlaskForm):
     choose = HiddenField('Choice')
     toggle = SubmitField()
 
+
+
+
 class EmailChange(FlaskForm):
-    oldEmail = StringField('Old email', validators=[DataRequired()])
+    choose = SelectField('Primary or Secondary Email', choices=[('0','Primary'),('1','Secondary')], default=('0','Primary'), validators=[DataRequired()])
+    oldEmail = StringField('Old email (leave blank if none)')
     email = StringField('New Email', validators=[DataRequired(), EqualTo('email2')])
     email2 = StringField('Re-enter Email', validators=[DataRequired()] )
     submit = SubmitField('Update Email')
+
+

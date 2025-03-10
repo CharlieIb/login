@@ -16,8 +16,11 @@ class User(UserMixin, db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     username: so.Mapped[str] = so.mapped_column(sa.String(64), index=True, unique=True)
     email: so.Mapped[str] = so.mapped_column(sa.String(120), index=True, unique=True)
+    backup_email: so.Mapped[str] = so.mapped_column(sa.String(120), index=True, unique=True, nullable=True)
     password_hash: so.Mapped[Optional[str]] = so.mapped_column(sa.String(256))
     role: so.Mapped[str] = so.mapped_column(sa.String(6), nullable=False, default='normal')
+    prev_login: so.Mapped[sa.DateTime] = so.mapped_column(sa.DateTime, default=None, nullable=True)
+    cur_login: so.Mapped[sa.DateTime] = so.mapped_column(sa.DateTime, default=None, nullable=True)
     '''
     def __init__(self, **kwargs):
         super().__init__(**kwargs)

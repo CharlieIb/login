@@ -1,10 +1,10 @@
 # Create the DB and all tables
 db.create_all()
 # Create some User objects
-u1 = User(username='amy', email='a@b.com',
-          password_hash=generate_password_hash('amy.pw'))
-u2 = User(username='tom', email='t@b.com',
-          password_hash=generate_password_hash('tom.pw'))
+u1 = User(username='amy', email='a@b.com', password_hash=generate_password_hash('amy.pw'), role='admin')
+u2 = User(username='tom', email='t@b.com', password_hash=generate_password_hash('tom.pw'), role='normal')
+u3 = User(username='yin', email='y@b.com', password_hash=generate_password_hash('yin.pw'), role='normal')
+
 u3 = User(username='yin', email='y@b.com')
 u3.set_password('yin.pw')
 

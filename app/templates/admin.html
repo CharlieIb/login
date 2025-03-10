@@ -14,8 +14,10 @@
     <tr>
         <td>ID</td>
         <td>Username</td>
-        <td>Email</td>
+        <td>Primary Email</td>
+        <td>Secondary Email</td>
         <td>Role</td>
+        <td>Previous Login</td>
     </tr>
     </thead>
     <tbody>
@@ -25,6 +27,8 @@
         <td>{{ user[1] }}</td>
         <td>{{ user[2] }}</td>
         <td>{{ user[3] }}</td>
+        <td>{{ user[4] }}</td>
+        <td>{{ user[5] }}</td>
         <form action="/admin" method="POST">
             {{ form.csrf_token() }}
             {{ form.choose(value = user[0]) }}

@@ -4,15 +4,23 @@
 
 {% block content %}
 <h1>Account Settings</h1>
-<form action="/account" method="POST">
+
 <p>Welcome {{ current_user.username }}</p>
-<p>email registered: {{ current_user.email }}</p>
-<div class="container">
+<p>Primary email registered: {{ current_user.email }}</p>
+<p>Secondary email registered: {{ current_user.backup_email }}</p>
+    <p>Last login: {{ current_user.prev_login }}</p>
+
+<form action="/account" method="POST">
+<div class="container mt-3">
     {{ form.hidden_tag() }}
+    <h2> Update Emails </h2>
+    {{ wtf.form_field(form.choose, False) }}
     {{ wtf.form_field(form.oldEmail, False) }}
     {{ wtf.form_field(form.email, False) }}
     {{ wtf.form_field(form.email2, False) }}
     {{ wtf.form_field(form.submit, False) }}
 </div>
 </form>
+
+
 {% endblock %}
